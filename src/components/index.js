@@ -13,6 +13,8 @@ import {
 import { DashboardAdmin, Categories, Products, Orders } from "./admin";
 import { UserProfile, UserOrders, SettingUser } from "./shop/dashboardUser";
 import AuthPage from "./shop/auth/AuthPage";
+import BlogPage from "./shop/blog/BlogPage";
+import ContactPage from "./shop/contact/ContactPage";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { isAuthenticate } from "./shop/auth/fetchApi";
 
@@ -27,6 +29,10 @@ const Routes = (props) => {
         <Route exact path="/" render={() =>
           isAuthenticate() ? <Home /> : <Redirect to="/auth" />
         } />
+
+        {/* Blog & Contact */}
+        <Route exact path="/blog" component={BlogPage} />
+        <Route exact path="/contact" component={ContactPage} />
 
         {/* Shop & Public Routes */}
         <Route exact path="/wish-list" component={WishList} />
