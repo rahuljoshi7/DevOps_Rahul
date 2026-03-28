@@ -37,8 +37,8 @@ const Product = () => {
   };
   if (loading) {
     return (
-      <div className="my-32 text-2xl text-center">
-        No product found in wishList
+      <div className="my-32 text-2xl text-center text-gray-500">
+        Your wishlist is empty
       </div>
     );
   }
@@ -65,7 +65,7 @@ const Product = () => {
                 </div>
                 <div className="md:w-1/2 md:flex md:items-center md:justify-around">
                   <div className="font-semibold text-gray-600">
-                    ${product.pPrice}.00
+                    ₹{product.pPrice}.00
                   </div>
                   {product.pQuantity > 0 ? (
                     <div className="text-green-500 my-1 md:my-0">In Stock</div>
@@ -100,7 +100,7 @@ const Product = () => {
             );
           })
         ) : (
-          <div>No product found in wishList</div>
+          <div>No products found in your wishlist</div>
         )}
       </div>
     </Fragment>

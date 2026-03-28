@@ -9,7 +9,7 @@ export const logout = () => {
   localStorage.removeItem("jwt");
   localStorage.removeItem("cart");
   localStorage.removeItem("wishList");
-  window.location.href = "/";
+  window.location.href = "/auth";
 };
 
 export const fetchData = async (dispatch) => {
@@ -76,7 +76,7 @@ export const handleChangePassword = async (fData, setFdata, dispatch) => {
       error: "Please provide your all password and a new password",
     });
   } else if (fData.newPassword !== fData.confirmPassword) {
-    setFdata({ ...fData, error: "Password does't match" });
+    setFdata({ ...fData, error: "Passwords don't match" });
   } else {
     const formData = {
       uId: JSON.parse(localStorage.getItem("jwt")).user._id,

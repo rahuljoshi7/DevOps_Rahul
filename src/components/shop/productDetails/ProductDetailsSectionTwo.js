@@ -47,8 +47,8 @@ const RatingReview = () => {
       {isAuthenticate() ? (
         <ReviewForm />
       ) : (
-        <div className="mb-12 md:mx-16 lg:mx-20 xl:mx-24 bg-red-200 px-4 py-2 rounded mb-4">
-          You need to login in for review
+        <div className="mb-12 md:mx-16 lg:mx-20 xl:mx-24 bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-2 rounded mb-4">
+          Please login to leave a review
         </div>
       )}
     </Fragment>

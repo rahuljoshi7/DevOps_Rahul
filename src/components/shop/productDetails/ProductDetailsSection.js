@@ -92,7 +92,7 @@ const ProductDetailsSection = (props) => {
       </div>
     );
   } else if (!sProduct) {
-    return <div>No product</div>;
+    return <div className="flex items-center justify-center h-screen text-gray-500 text-xl">Product not found</div>;
   }
   return (
     <Fragment>
@@ -177,7 +177,7 @@ const ProductDetailsSection = (props) => {
               <div className="text-2xl tracking-wider">{sProduct.pName}</div>
               <div className="flex justify-between items-center">
                 <span className="text-xl tracking-wider text-yellow-700">
-                  ${sProduct.pPrice}.00
+                  ₹{sProduct.pPrice}.00
                 </span>
                 <span>
                   <svg

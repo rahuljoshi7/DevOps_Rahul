@@ -6,134 +6,90 @@ const { JWT_SECRET } = require("../config/keys");
 
 class Auth {
   async isAdmin(req, res) {
-    let { loggedInUserId } = req.body;
+    const { loggedInUserId } = req.body;
     try {
-      let loggedInUserRole = await userModel.findById(loggedInUserId);
-      res.json({ role: loggedInUserRole.userRole });
-    } catch {
-      res.status(404);
+      const user = await userModel.findById(loggedInUserId);
+      return res.json({ role: user.userRole });
+    } catch (err) {
+      return res.status(404).json({ error: err.message });
     }
   }
 
   async allUser(req, res) {
     try {
-      let allUser = await userModel.find({});
-      res.json({ users: allUser });
-    } catch {
-      res.status(404);
+      const allUser = await userModel.find({});
+      return res.json({ users: allUser });
+    } catch (err) {
+      return res.status(404).json({ error: err.message });
     }
   }
 
-  /* User Registration/Signup controller  */
   async postSignup(req, res) {
     let { name, email, password, cPassword } = req.body;
     let error = {};
+
     if (!name || !email || !password || !cPassword) {
       error = {
-        ...error,
-        name: "Filed must not be empty",
-        email: "Filed must not be empty",
-        password: "Filed must not be empty",
-        cPassword: "Filed must not be empty",
+        name: "Field must not be empty",
+        email: "Field must not be empty",
+        password: "Field must not be empty",
+        cPassword: "Field must not be empty",
       };
       return res.json({ error });
     }
+
     if (name.length < 3 || name.length > 25) {
-      error = { ...error, name: "Name must be 3-25 charecter" };
-      return res.json({ error });
-    } else {
-      if (validateEmail(email)) {
-        name = toTitleCase(name);
-        if ((password.length > 255) | (password.length < 8)) {
-          error = {
-            ...error,
-            password: "Password must be 8 charecter",
-            name: "",
-            email: "",
-          };
-          return res.json({ error });
-        } else {
-          // If Email & Number exists in Database then:
-          try {
-            password = bcrypt.hashSync(password, 10);
-            const data = await userModel.findOne({ email: email });
-            if (data) {
-              error = {
-                ...error,
-                password: "",
-                name: "",
-                email: "Email already exists",
-              };
-              return res.json({ error });
-            } else {
-              let newUser = new userModel({
-                name,
-                email,
-                password,
-                // ========= Here role 1 for admin signup role 0 for customer signup =========
-                userRole: 1, // Field Name change to userRole from role
-              });
-              newUser
-                .save()
-                .then((data) => {
-                  return res.json({
-                    success: "Account create successfully. Please login",
-                  });
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-            }
-          } catch (err) {
-            console.log(err);
-          }
-        }
-      } else {
-        error = {
-          ...error,
-          password: "",
-          name: "",
-          email: "Email is not valid",
-        };
-        return res.json({ error });
+      return res.json({ error: { ...error, name: "Name must be 3-25 characters" } });
+    }
+
+    if (!validateEmail(email)) {
+      return res.json({ error: { ...error, email: "Email is not valid" } });
+    }
+
+    if (password.length < 8 || password.length > 255) {
+      return res.json({ error: { ...error, password: "Password must be at least 8 characters" } });
+    }
+
+    try {
+      const existing = await userModel.findOne({ email });
+      if (existing) {
+        return res.json({ error: { ...error, email: "Email already exists" } });
       }
+
+      name = toTitleCase(name);
+      const hashed = bcrypt.hashSync(password, 10);
+
+      const newUser = new userModel({
+        name,
+        email,
+        password: hashed,
+        userRole: 0, // 0 = customer, 1 = admin
+      });
+
+      await newUser.save();
+      return res.json({ success: "Account created successfully. Please login" });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
     }
   }
 
-  /* User Login/Signin controller  */
   async postSignin(req, res) {
-    let { email, password } = req.body;
+    const { email, password } = req.body;
     if (!email || !password) {
-      return res.json({
-        error: "Fields must not be empty",
-      });
+      return res.json({ error: "Fields must not be empty" });
     }
     try {
-      const data = await userModel.findOne({ email: email });
-      if (!data) {
-        return res.json({
-          error: "Invalid email or password",
-        });
-      } else {
-        const login = await bcrypt.compare(password, data.password);
-        if (login) {
-          const token = jwt.sign(
-            { _id: data._id, role: data.userRole },
-            JWT_SECRET
-          );
-          const encode = jwt.verify(token, JWT_SECRET);
-          return res.json({
-            token: token,
-            user: encode,
-          });
-        } else {
-          return res.json({
-            error: "Invalid email or password",
-          });
-        }
-      }
+      const data = await userModel.findOne({ email });
+      if (!data) return res.json({ error: "Invalid email or password" });
+
+      const login = await bcrypt.compare(password, data.password);
+      if (!login) return res.json({ error: "Invalid email or password" });
+
+      const token = jwt.sign({ _id: data._id, role: data.userRole }, JWT_SECRET);
+      const encode = jwt.verify(token, JWT_SECRET);
+      return res.json({ token, user: encode });
     } catch (err) {
-      console.log(err);
+      return res.status(500).json({ error: err.message });
     }
   }
 }
