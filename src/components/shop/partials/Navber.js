@@ -29,7 +29,7 @@ const Navber = (props) => {
 
   return (
     <Fragment>
-      {/* Navber Section */}
+      {/* Navbar Section */}
       <nav className="fixed top-0 w-full z-20 shadow-lg lg:shadow-none bg-white">
         <div className="m-4 md:mx-12 md:my-6 grid grid-cols-4 lg:grid-cols-3">
           <div className="hidden lg:block col-span-1 flex text-gray-600 mt-1">
@@ -41,13 +41,13 @@ const Navber = (props) => {
             </span>
             <span
               className="hover:bg-gray-200 px-4 py-3 rounded-lg font-light tracking-widest hover:text-gray-800 cursor-pointer"
-              onClick={(e) => history.push("/blog")}
+              onClick={(e) => history.push("/")}
             >
               Blog
             </span>
             <span
               className="hover:bg-gray-200 px-4 py-3 rounded-lg font-light tracking-widest hover:text-gray-800 cursor-pointer"
-              onClick={(e) => history.push("/contact-us")}
+              onClick={(e) => history.push("/")}
             >
               Contact us
             </span>
@@ -375,20 +375,20 @@ const Navber = (props) => {
             </span>
             <span
               className="font-medium text-lg tracking-widest hover:text-gray-800 hover:bg-gray-200 px-3 py-2 rounded-lg cursor-pointer"
-              onClick={(e) => history.push("/blog")}
+              onClick={(e) => history.push("/")}
             >
               Blog
             </span>
             <span
               className="font-medium text-lg tracking-widest hover:text-gray-800 hover:bg-gray-200 px-3 py-2 rounded-lg cursor-pointer"
-              onClick={(e) => history.push("/contact-us")}
+              onClick={(e) => history.push("/")}
             >
               Contact us
             </span>
           </div>
         </div>
       </nav>
-      {/* End Navber Section */}
+      {/* End Navbar Section */}
     </Fragment>
   );
 };

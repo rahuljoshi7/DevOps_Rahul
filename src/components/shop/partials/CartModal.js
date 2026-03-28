@@ -120,9 +120,9 @@ const CartModal = () => {
                             <div>
                               {" "}
                               <span className="text-sm text-gray-400">
-                                Subtotoal :
+                                Subtotal :
                               </span>{" "}
-                              ${subTotal(item._id, item.pPrice)}.00
+                              ₹{subTotal(item._id, item.pPrice)}.00
                             </div>{" "}
                             {/* SUbtotal Count */}
                           </div>
@@ -153,7 +153,7 @@ const CartModal = () => {
 
               {products === null && (
                 <div className="m-4 flex-col text-white text-xl text-center">
-                  No product in cart
+                  🛒 Your cart is empty
                 </div>
               )}
             </div>
@@ -161,7 +161,7 @@ const CartModal = () => {
           <div className="m-4 space-y-4">
             <div
               onClick={(e) => cartModalOpen()}
-              className="cursor-pointer px-4 py-2 border border-gray-400 text-white text-center cursor-pointer"
+              className="cursor-pointer px-4 py-2 border border-gray-400 text-white text-center"
             >
               Continue shopping
             </div>
@@ -175,7 +175,7 @@ const CartModal = () => {
                       cartModalOpen();
                     }}
                   >
-                    Checkout ${data.cartTotalCost}.00
+                    Checkout ₹{data.cartTotalCost}.00
                   </div>
                 ) : (
                   <div
@@ -193,7 +193,7 @@ const CartModal = () => {
                       });
                     }}
                   >
-                    Checkout ${data.cartTotalCost}.00
+                    Checkout ₹{data.cartTotalCost}.00
                   </div>
                 )}
               </Fragment>

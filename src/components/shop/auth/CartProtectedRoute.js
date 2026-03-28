@@ -5,9 +5,10 @@ import { isAuthenticate } from "./fetchApi";
 const CartProtectedRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
-    render={(props) =>
-      JSON.parse(localStorage.getItem("cart")).length !== 0 &&
-      isAuthenticate() ? (
+    render={(props) => {
+      const cart = localStorage.getItem("cart");
+      const cartItems = cart ? JSON.parse(cart) : [];
+      return cartItems.length !== 0 && isAuthenticate() ? (
         <Component {...props} />
       ) : (
         <Redirect
@@ -16,8 +17,8 @@ const CartProtectedRoute = ({ component: Component, ...rest }) => (
             state: { from: props.location },
           }}
         />
-      )
-    }
+      );
+    }}
   />
 );
 
