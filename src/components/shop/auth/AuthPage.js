@@ -144,12 +144,12 @@ const LoginForm = ({ onSwitch }) => {
 
       <Field label="Email Address" id="email" type="email" value={s.email}
         onChange={e => dispatch({ email: e.target.value, error: "" })}
-        placeholder="you@example.com" error={s.error && !s.email ? s.error : ""} />
+        placeholder="" error={s.error && !s.email ? s.error : ""} />
 
       <Field label="Password" id="current-password" type={s.showPass ? "text" : "password"}
         value={s.password}
         onChange={e => dispatch({ password: e.target.value, error: "" })}
-        placeholder="Enter your password"
+        placeholder=""
         error={s.error && !s.password ? s.error : ""}>
         <EyeIcon visible={s.showPass} onClick={() => dispatch({ showPass: !s.showPass })} />
       </Field>
@@ -212,17 +212,17 @@ const SignupForm = ({ onSwitch }) => {
 
       <Field label="Full Name" id="name" type="text" value={s.name}
         onChange={e => dispatch({ name: e.target.value, error: "", success: "" })}
-        placeholder="John Doe" />
+        placeholder="" />
 
       <Field label="Email Address" id="signup-email" type="email" value={s.email}
         onChange={e => dispatch({ email: e.target.value, error: "", success: "" })}
-        placeholder="you@example.com" />
+        placeholder="" />
 
       <div className="space-y-1">
         <Field label="Password" id="new-password" type={s.showPass ? "text" : "password"}
           value={s.password}
           onChange={e => dispatch({ password: e.target.value, error: "", success: "" })}
-          placeholder="Min. 8 characters">
+          placeholder="">
           <EyeIcon visible={s.showPass} onClick={() => dispatch({ showPass: !s.showPass })} />
         </Field>
         {/* ─── 7. PASSWORD STRENGTH: real-time feedback ─── */}
@@ -232,7 +232,7 @@ const SignupForm = ({ onSwitch }) => {
       <Field label="Confirm Password" id="confirm-password" type={s.showCPass ? "text" : "password"}
         value={s.cPassword}
         onChange={e => dispatch({ cPassword: e.target.value, error: "", success: "" })}
-        placeholder="Re-enter your password"
+        placeholder=""
         error={s.cPassword && s.password !== s.cPassword ? "Passwords do not match" : ""}>
         <EyeIcon visible={s.showCPass} onClick={() => dispatch({ showCPass: !s.showCPass })} />
       </Field>
