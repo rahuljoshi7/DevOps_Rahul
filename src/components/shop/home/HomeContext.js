@@ -3,8 +3,13 @@ export const homeState = {
   filterListDropdown: false,
   searchDropdown: false,
   products: null,
+  allProducts: null,
   loading: false,
   sliderImages: [],
+  sort: "default",
+  page: 1,
+  perPage: 8,
+  toast: null,
 };
 
 export const homeReducer = (state, action) => {
@@ -34,7 +39,16 @@ export const homeReducer = (state, action) => {
       return {
         ...state,
         products: action.payload,
+        allProducts: state.allProducts || action.payload,
       };
+    case "setAllProducts":
+      return { ...state, allProducts: action.payload };
+    case "setSort":
+      return { ...state, sort: action.payload, page: 1 };
+    case "setPage":
+      return { ...state, page: action.payload };
+    case "setToast":
+      return { ...state, toast: action.payload };
     case "searchHandleInReducer":
       return {
         ...state,
@@ -51,10 +65,7 @@ export const homeReducer = (state, action) => {
           }),
       };
     case "loading":
-      return {
-        ...state,
-        loading: action.payload,
-      };
+      return { ...state, loading: action.payload };
     case "sliderImages":
       return {
         ...state,
