@@ -170,6 +170,74 @@ BF-Fabric/
 
 ---
 
+## ⚡ Quick Start (From Scratch)
+
+This is the complete step-by-step guide to get everything running from zero.
+
+### Step 1 — Clone the repo
+
+```bash
+git clone https://github.com/chan907/DevOps.git
+cd DevOps
+```
+
+### Step 2 — Start Jenkins with Docker Compose
+
+```bash
+docker-compose up -d jenkins
+```
+
+### Step 3 — Get Jenkins Admin Password
+
+```bash
+docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+```
+
+### Step 4 — Setup Jenkins
+
+1. Open http://localhost:8081
+2. Paste the password from Step 3
+3. Click **Install suggested plugins**
+4. Create your admin user
+
+### Step 5 — Add GitHub Credentials
+
+1. Go to **Manage Jenkins** → **Credentials** → **System** → **Global** → **Add Credentials**
+2. Kind: `Username with password`
+3. Username: your GitHub username
+4. Password: your GitHub token
+5. ID: `github-credentials`
+6. Click **Save**
+
+### Step 6 — Create Pipeline
+
+1. Click **New Item**
+2. Name: `devops-app` → Select **Pipeline** → **OK**
+3. Scroll to **Pipeline** section:
+   - Definition: `Pipeline script from SCM`
+   - SCM: `Git`
+   - Repository URL: `https://github.com/chan907/DevOps.git`
+   - Credentials: `github-credentials`
+   - Branch: `*/main`
+   - Script Path: `Jenkinsfile`
+4. Click **Save**
+
+### Step 7 — Set Executors
+
+1. Go to **Manage Jenkins** → **Nodes** → **Built-In Node** → **Configure**
+2. Set **Number of executors** to `2`
+3. Click **Save**
+
+### Step 8 — Build & Deploy
+
+1. Click **Build Now**
+2. Wait for the pipeline to complete (~3-5 mins first time)
+3. App will be live at **http://localhost:8002** ✅
+
+> **Every time you push code to GitHub**, just click **Build Now** in Jenkins to rebuild and redeploy.
+
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -179,7 +247,7 @@ Make sure you have the following installed:
 - [Node.js 18+](https://nodejs.org/)
 - [MongoDB](https://www.mongodb.com/try/download/community) (local) or use Docker
 - [Git](https://git-scm.com/)
-- [Docker](https://www.docker.com/) *(optional, for containerized setup)*
+- [Docker](https://www.docker.com/) *(required for Jenkins and containerized setup)*
 
 ### 1. Clone the repository
 
