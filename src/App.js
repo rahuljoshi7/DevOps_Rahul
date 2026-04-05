@@ -1,10 +1,13 @@
-
 import React, { Fragment, useReducer } from "react";
 import Routes from "./components";
 import { LayoutContext, layoutState, layoutReducer } from "./components/shop";
 
 function App() {
     const [data, dispatch] = useReducer(layoutReducer, layoutState);
+
+    // ✅ Move console.log here
+    console.log("Krutik change");
+
     return (
         <Fragment>
             <LayoutContext.Provider value={{ data, dispatch }}>
@@ -12,10 +15,6 @@ function App() {
             </LayoutContext.Provider>
         </Fragment>
     );
-
-console.log("Krutik change");
 }
-
-
 
 export default App;
