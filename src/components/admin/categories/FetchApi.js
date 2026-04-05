@@ -1,9 +1,13 @@
 import axios from "axios";
 
+// ✅ FIX ADDED HERE
+const apiURL = process.env.REACT_APP_API_URL || "http://localhost:8000";
+
 const BearerToken = () =>
   localStorage.getItem("jwt")
     ? JSON.parse(localStorage.getItem("jwt")).token
     : false;
+
 const Headers = () => {
   return {
     headers: {
