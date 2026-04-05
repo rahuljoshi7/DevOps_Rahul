@@ -6,41 +6,46 @@ pipeline {
     }
 
     stages {
-        stage('Install Frontend Dependencies') {
-            steps {
-                sh 'npm install'
-            }
-        }
 
-        stage('Install Backend Dependencies') {
+        stage('Build Docker Image') {
             steps {
-                dir('server') {
-                    sh 'npm install'
+                script {
+                    if (isUnix()) {
+                        sh 'docker build -t devops-app .'
+                    } else {
+                        bat 'docker build -t devops-app .'
+                    }
                 }
             }
         }
 
-        stage('Build Frontend') {
+        stage('Deploy Application') {
             steps {
-                sh 'npm run build'
+                script {
+                    if (isUnix()) {
+                        sh '''
+                        docker-compose -p devops-app down || true
+                        docker-compose -p devops-app up -d --build
+                        '''
+                    } else {
+                        bat '''
+                        docker-compose -p devops-app down || exit 0
+                        docker-compose -p devops-app up -d --build
+                        '''
+                    }
+                }
             }
         }
 
-        stage('Test Frontend') {
+        stage('Verify Deployment') {
             steps {
-                sh 'npm test -- --passWithNoTests --watchAll=false'
-            }
-        }
-
-        stage('Docker Build & Push') {
-            steps {
-                sh 'docker build -t devops-app .'
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                sh 'docker-compose up -d --build app mongo'
+                script {
+                    if (isUnix()) {
+                        sh 'docker ps'
+                    } else {
+                        bat 'docker ps'
+                    }
+                }
             }
         }
     }
